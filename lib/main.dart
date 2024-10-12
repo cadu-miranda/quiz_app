@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:quiz_app/screens/home_screen.dart';
+import 'package:quiz_app/screens/quiz_screen.dart';
 
 void main() {
   runApp(const QuizApp());
@@ -16,6 +17,10 @@ class QuizApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       home: const HomeScreen(),
+      routes: {
+        '/home': (context) => const HomeScreen(),
+        '/quiz': (context) => const QuizScreen(),
+      },
     );
   }
 }
