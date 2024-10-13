@@ -4,9 +4,12 @@ import 'package:quiz_app/data/questions.dart';
 import 'package:quiz_app/widgets/answer_button.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen(this.endQuiz, {super.key});
+  const QuestionsScreen({
+    super.key,
+    required this.chooseAnswer,
+  });
 
-  final void Function() endQuiz;
+  final void Function(String answer) chooseAnswer;
 
   @override
   State<QuestionsScreen> createState() => _QuestionsScreenState();
@@ -15,12 +18,10 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   int currentQuestionIndex = 0;
 
-  void answerQuestion() {
-    setState(() {
-      if (currentQuestionIndex == 5) {
-        return;
-      }
+  void answerQuestion(String selectedAnswer) {
+    widget.chooseAnswer(selectedAnswer);
 
+    setState(() {
       currentQuestionIndex++;
     });
   }
@@ -36,20 +37,23 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
             child: Text(
               currentQuestion.text,
               textAlign: TextAlign.center,
-              style: GoogleFonts.roboto(
-                color: Colors.white,
-                fontSize: 26,
-              ),
+              style: GoogleFonts.lato(
+                  color: const Color.fromARGB(255, 201, 153, 251),
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold),
             ),
           ),
           const SizedBox(height: 20),
-          ...currentQuestion.getShuffledAnswers().map((answer) {
+          ...currentQuestion.shuffledAnswers.map((answer) {
             return AnswerButton(
-              onPressed: answerQuestion,
+              onPressed: () {
+                answerQuestion(answer);
+              },
               answer: answer,
             );
           })
